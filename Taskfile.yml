@@ -61,5 +61,7 @@ tasks:
       - backend:build
   dev:
     desc: Run the application in development mode
+    deps:
+      - frontend:build
     cmds:
       - go run ./_scripts/concurrent_tasks.go frontend:dev backend:dev
