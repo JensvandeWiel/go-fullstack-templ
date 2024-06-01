@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/JensvandeWiel/config"
+	"github.com/JensvandeWiel/docs"
+	"github.com/JensvandeWiel/frontend"
+	"github.com/JensvandeWiel/logger"
+	_ "github.com/JensvandeWiel/logger"
+	"github.com/JensvandeWiel/middleware"
 	"github.com/labstack/echo/v4"
 	slogecho "github.com/samber/slog-echo"
 	echoSwagger "github.com/swaggo/echo-swagger"
-	"go-fullstack-templ/config"
-	"go-fullstack-templ/docs"
-	"go-fullstack-templ/frontend"
-	"go-fullstack-templ/logger"
-	_ "go-fullstack-templ/logger"
-	"go-fullstack-templ/middleware"
 )
 
 //	@title			go-fullstack-templ

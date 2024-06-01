@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/JensvandeWiel/handlers"
 	"github.com/labstack/echo/v4"
-	"go-fullstack-templ/handlers"
 )
 
 func createRoutes(root *echo.Group) {

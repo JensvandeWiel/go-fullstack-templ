@@ -1,9 +1,9 @@
 package middleware
 
 import (
+	"github.com/JensvandeWiel/logger"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"go-fullstack-templ/logger"
 	"log/slog"
 )
 

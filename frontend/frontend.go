@@ -2,11 +2,11 @@ package frontend
 
 import (
 	"embed"
+	"github.com/JensvandeWiel/config"
+	"github.com/JensvandeWiel/logger"
+	_ "github.com/JensvandeWiel/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"go-fullstack-templ/config"
-	"go-fullstack-templ/logger"
-	_ "go-fullstack-templ/logger"
 	"net/url"
 	"os"
 	"strings"

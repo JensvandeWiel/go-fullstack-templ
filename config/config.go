@@ -1,8 +1,8 @@
 package config
 
 import (
+	"github.com/JensvandeWiel/logger"
 	"github.com/fatih/structs"
-	"go-fullstack-templ/logger"
 	"gopkg.in/yaml.v3"
 	"log/slog"
 	"os"

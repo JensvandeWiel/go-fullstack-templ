@@ -1,4 +1,4 @@
-module go-fullstack-templ
+module github.com/JensvandeWiel
 
 go 1.22
 
