@@ -1,0 +1,65 @@
+version: "3"
+
+tasks:
+  installdeps:
+    desc: Install required tools
+    cmds:
+      - go install github.com/swaggo/swag/cmd/swag@latest
+      - go install github.com/cosmtrek/air@latest
+      - cd frontend && npm install
+  generate_swagger:
+    desc: Generate swagger documentation
+    deps:
+      - installdeps
+    cmds:
+      - rm -rf docs
+      - swag init
+      - swag fmt
+  frontend:init:
+    desc: Initialize the frontend
+    cmds:
+      - npm create vite frontend
+  frontend:dev:
+    deps:
+      - installdeps
+    desc: Run the frontend in development mode
+    cmds:
+      - cd frontend && npm run dev
+  frontend:build:
+    deps:
+      - installdeps
+    desc: Build the frontend
+    cmds:
+      - cd frontend && npm run build
+  frontend:_delete:
+    desc: Delete the frontend
+    cmds:
+      - rm -rf frontend/node_modules
+      - find frontend -type f ! -name 'frontend.go' -delete
+      - find frontend -type d -empty -delete
+  backend:dev:
+    desc: Run the application in development mode
+    env:
+      ENV: "dev"
+      LOG_LEVEL: "debug"
+    deps:
+      - installdeps
+    cmds:
+      - air -c .air.toml
+  backend:build:
+    desc: Build the application
+    deps:
+      - installdeps
+    cmds:
+      - swag init
+      - go build -o bin/app
+  build:
+    desc: Build the application
+    deps:
+      - generate_swagger
+      - frontend:build
+      - backend:build
+  dev:
+    desc: Run the application in development mode
+    cmds:
+      - go run ./_scripts/concurrent_tasks.go frontend:dev backend:dev
