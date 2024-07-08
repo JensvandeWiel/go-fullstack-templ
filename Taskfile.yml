@@ -5,7 +5,7 @@ tasks:
     desc: Install required tools
     cmds:
       - go install github.com/swaggo/swag/cmd/swag@latest
-      - go install github.com/cosmtrek/air@latest
+      - go install github.com/air-verse/air@latest
       - cd frontend && npm install
   generate_swagger:
     desc: Generate swagger documentation

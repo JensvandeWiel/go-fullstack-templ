@@ -30,7 +30,7 @@ var (
 )
 
 func RegisterFrontend(e *echo.Echo) {
-	if env, ok := config.GetKey("evnironment"); ok && env.(string) == "dev" {
+	if env, ok := config.GetKey("environment"); ok && env.(string) == "dev" {
 		logger.GetLogger().Info("Running in dev mode")
 		setupDevProxy(e)
 		return
