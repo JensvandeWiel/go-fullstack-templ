@@ -1,0 +1,17 @@
+{
+  "src/Pages/Index.vue": {
+    "file": "assets/Index.js",
+    "name": "Index",
+    "src": "src/Pages/Index.vue",
+    "isDynamicEntry": true
+  },
+  "src/main.ts": {
+    "file": "assets/main.js",
+    "name": "main",
+    "src": "src/main.ts",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/Pages/Index.vue"
+    ]
+  }
+}
