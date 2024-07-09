@@ -12,7 +12,7 @@ export default defineConfig({
       })
   ],
   build: {
-    rollupOptionsL: {
+    rollupOptions: {
       manifest: true,
       input: 'src/main.ts',
       output: {
