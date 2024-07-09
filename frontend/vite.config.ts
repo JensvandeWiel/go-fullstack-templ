@@ -12,8 +12,8 @@ export default defineConfig({
       })
   ],
   build: {
+    manifest: true,
     rollupOptions: {
-      manifest: true,
       input: 'src/main.ts',
       output: {
         entryFileNames: 'assets/[name].js',
