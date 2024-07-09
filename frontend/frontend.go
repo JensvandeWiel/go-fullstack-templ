@@ -60,6 +60,7 @@ func RegisterFrontend(e *echo.Echo) {
 	}
 	inertia.ShareTemplateFunc("vite", vite(manifestPath, ""))
 	inertia.ShareTemplateFunc("viteHead", viteHead())
+	inertia.ShareTemplateFunc("reactRefresh", reactRefresh())
 
 	e.Use(echo.WrapMiddleware(inertia.Middleware), middleware2.AttachInertia(inertia))
 
@@ -132,7 +133,20 @@ func vite(manifestPath, buildDir string) func(path string) (string, error) {
 		return "", fmt.Errorf("asset %q not found", p)
 	}
 }
+func reactRefresh() func() template.HTML {
+	return func() template.HTML {
+		if conf, ok := config.GetConfig(); ok && conf.Environment == "dev" {
+			return "<script type=\"module\">import RefreshRuntime from '/@react-refresh';" +
+				"RefreshRuntime.injectIntoGlobalHook(window);" +
+				"window.$RefreshReg$ = () => { };" +
+				"window.$RefreshSig$ = () => (type) => type;" +
+				"window.__vite_plugin_react_preamble_installed__ = true;</script>"
+		} else {
+			return ""
+		}
+	}
 
+}
 func viteHead() func() template.HTML {
 	return func() template.HTML {
 		if conf, ok := config.GetConfig(); ok && conf.Environment == "dev" {

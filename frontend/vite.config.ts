@@ -1,20 +1,20 @@
 import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import react from '@vitejs/plugin-react'
 import laravel from 'laravel-vite-plugin'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-      vue(),
+      react(),
       laravel({
-        input: 'src/main.ts',
+        input: 'src/main.tsx',
         refresh: true,
       })
   ],
   build: {
     manifest: true,
     rollupOptions: {
-      input: 'src/main.ts',
+      input: 'src/main.tsx',
       output: {
         entryFileNames: 'assets/[name].js',
         chunkFileNames: 'assets/[name].js',
