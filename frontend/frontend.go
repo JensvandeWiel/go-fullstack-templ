@@ -1,6 +1,7 @@
 package frontend
 
 import (
+	"crypto/sha256"
 	"embed"
 	"encoding/json"
 	"fmt"
@@ -11,6 +12,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/romsar/gonertia"
+	"html/template"
 	"net/url"
 	"os"
 	"path"
@@ -27,7 +29,10 @@ var (
 	//go:embed root.gohtml
 	rootTemplate []byte
 
-	distDirFS = echo.MustSubFS(dist, "dist")
+	//go:embed public/build/.vite/manifest.json
+	manifest string
+
+	distDirFS = echo.MustSubFS(dist, "public/build")
 
 	// Endpoints to ignore the proxy for
 	ignoreList = []string{"api", "swagger"}
@@ -36,17 +41,25 @@ var (
 )
 
 const (
-	manifestPath = "frontend/public/build/manifest.json"
+	manifestPath = "frontend/public/build/.vite/manifest.json"
 )
 
+func createHash() string {
+	hash := sha256.New()
+	hash.Write(rootTemplate)
+	return fmt.Sprintf("%x", hash.Sum(nil))
+}
+
 func RegisterFrontend(e *echo.Echo) {
+
 	var err error
-	inertia, err = gonertia.NewFromBytes(rootTemplate, gonertia.WithVersionFromFile(manifestPath))
+	inertia, err = gonertia.NewFromBytes(rootTemplate, gonertia.WithVersion(createHash()))
 	if err != nil {
 		logger.GetLogger().Error("Failed to initialize Inertia", err)
 		os.Exit(1)
 	}
-	inertia.ShareTemplateFunc("vite", vite(manifestPath, "dist"))
+	inertia.ShareTemplateFunc("vite", vite(manifestPath, ""))
+	inertia.ShareTemplateFunc("viteHead", viteHead())
 
 	e.Use(echo.WrapMiddleware(inertia.Middleware), middleware2.AttachInertia(inertia))
 
@@ -117,6 +130,16 @@ func vite(manifestPath, buildDir string) func(path string) (string, error) {
 			return path.Join("/", buildDir, val.File), nil
 		}
 		return "", fmt.Errorf("asset %q not found", p)
+	}
+}
+
+func viteHead() func() template.HTML {
+	return func() template.HTML {
+		if conf, ok := config.GetConfig(); ok && conf.Environment == "dev" {
+			return "<script type=\"module\" src=\"/@vite/client\"></script>"
+		} else {
+			return ""
+		}
 	}
 }
 
