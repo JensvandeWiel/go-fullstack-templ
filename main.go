@@ -26,9 +26,15 @@ import (
 //	@name						Authorization
 
 // @license.name	MIT
+
 func main() {
-	conf := config.GetConfig()
+	conf, ok := config.GetConfig()
+	if !ok {
+		panic("Failed to get config")
+	}
 	e := createEcho()
+	createRoutes(e)
+
 	url := fmt.Sprintf("%s:%s", conf.Host, conf.Port)
 	docs.SwaggerInfo.Host = url
 
@@ -36,8 +42,6 @@ func main() {
 		logger.GetLogger().Debug("Environment is not production, enabling swagger endpoint")
 		e.GET("/swagger/*", echoSwagger.WrapHandler)
 	}
-
-	createRoutes(e.Group("/api"))
 
 	logger.GetLogger().Info(fmt.Sprintf("Starting server on: %s", url))
 	logger.GetLogger().Error(e.Start(url).Error())
@@ -48,6 +52,7 @@ func createEcho() *echo.Echo {
 	e.HideBanner = true
 	e.HidePort = true
 	e.Use(slogecho.New(logger.GetLogger()), middleware.AttachRequestID())
+	createRoutes(e)
 	frontend.RegisterFrontend(e)
 	return e
 }

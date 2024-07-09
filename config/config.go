@@ -82,8 +82,8 @@ func getConfig(path string) (*Config, error) {
 	return config, nil
 }
 
-func GetConfig() *Config {
-	return conf
+func GetConfig() (*Config, bool) {
+	return conf, conf != nil
 }
 
 func GetKey(key string) (interface{}, bool) {

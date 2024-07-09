@@ -5,9 +5,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func createRoutes(root *echo.Group) {
-	//V1
-	v1 := root.Group("/v1")
-	indexHandler := handlers.NewIndexHandler()
-	v1.GET("/hello", indexHandler.HelloWorldHandle)
+func createRoutes(e *echo.Echo) {
+	iih := handlers.NewIndexInertiaHandler()
+	e.GET("", iih.IndexInertiaHandle)
+	{
+		api := e.Group("/api")
+		{
+			helloWorldHandler := handlers.NewHelloWorldHandler()
+			v1 := api.Group("/v1")
+			v1.GET("/hello", helloWorldHandler.HelloWorldHandle)
+		}
+	}
 }

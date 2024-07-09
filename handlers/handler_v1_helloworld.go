@@ -4,12 +4,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type IndexHandler struct {
+type HelloWorldHandler struct {
 	Handler
 }
 
-func NewIndexHandler() *IndexHandler {
-	return &IndexHandler{}
+func NewHelloWorldHandler() *HelloWorldHandler {
+	return &HelloWorldHandler{}
 }
 
 // HelloWorldHandle return a simple hello world message
@@ -20,6 +20,6 @@ func NewIndexHandler() *IndexHandler {
 //	@Produce		plain
 //	@Success		200	{object}	string
 //	@Router			/v1/hello [get]
-func (h *IndexHandler) HelloWorldHandle(ctx echo.Context) error {
+func (h *HelloWorldHandler) HelloWorldHandle(ctx echo.Context) error {
 	return ctx.String(200, "Hello, World!")
 }

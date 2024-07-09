@@ -4,6 +4,7 @@ import (
 	"github.com/JensvandeWiel/logger"
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
+	"github.com/romsar/gonertia"
 	"log/slog"
 )
 
@@ -31,4 +32,17 @@ func GetRequestID(c echo.Context) string {
 
 func GetLogger(c echo.Context) *slog.Logger {
 	return c.Get("logger").(*slog.Logger)
+}
+
+func GetInertia(c echo.Context) *gonertia.Inertia {
+	return c.Get("inertia").(*gonertia.Inertia)
+}
+
+func AttachInertia(i *gonertia.Inertia) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			c.Set("inertia", i)
+			return next(c)
+		}
+	}
 }
